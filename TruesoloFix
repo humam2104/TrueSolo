@@ -1,0 +1,20 @@
+    local Controller C;
+    local KFPawn_Human CurKFPH;
+		foreach WorldInfo.AllControllers( class'Controller', C)
+		    {
+			    if( C.bIsPlayer
+	        	&& C.PlayerReplicationInfo != none //Checks if the player has replication info (sometimes used for giving ammo, armor etc)
+	        	&& C.PlayerReplicationInfo.bReadyToPlay //Checks if the player is ready to play
+	        	&& !C.PlayerReplicationInfo.bOnlySpectator //Checks if the player is not a spectator
+	        	&& C.GetTeamNum() == 0 ) //Checks for a human player
+		        {
+              //Give Player Syringe
+              CurKFPH = KFPawn_Human(PlayerController(C).AcknowledgedPawn);
+              ReplaceSyringe(CurKFPH);
+		        }	
+		    }
+        
+        //
+        //This function is called only by GameInfo.RestartPlayer()
+        //and it doesn't affect all players, I've seen that it affects only the first player
+        function ModifyPlayer(Pawn P)
